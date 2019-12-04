@@ -10,7 +10,9 @@ export CIF_HUNTER_EXCLUDE="osint.bambenekconsulting.com:dga"
 
 gunicorn \
     -w 4 --max-requests-jitter 5 -b 0.0.0.0:5000 cif.httpd:app \
-    --log-level DEBUG --worker-class gevent --preload --max-requests 25 \
+    --log-level DEBUG --preload --max-requests 25 \
     --graceful-timeout 120 --keep-alive 30 --timeout 150 --log-level DEBUG \
-    --access-logfile /var/log/gunicorn/access.log \
-    --error-logfile /var/log/gunicorn/error.log -p /var/run/cif/gunicorn.pid
+    --worker-tmp-dir /dev/shm \
+    --worker-class gthread \
+    --access-logfile - \
+    -p /var/run/cif/gunicorn.pid
